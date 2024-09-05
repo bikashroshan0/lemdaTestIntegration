@@ -9,6 +9,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.safari.SafariOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -16,6 +17,7 @@ import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import org.testng.annotations.Parameters;
 
 
 import java.net.MalformedURLException;
@@ -31,31 +33,78 @@ public class LemdaTestAllAssignment {
     WebDriver driver;
     WebDriverWait wait;
 
+    @Parameters({"platform", "browserVersion"})
     @BeforeClass
-    public void setUp() throws MalformedURLException {
+    public void setUp(String platform, String browserVersion) throws MalformedURLException {
 
-        ChromeOptions browserOptions = new ChromeOptions();
-        browserOptions.setPlatformName("Windows 10");
-        browserOptions.setBrowserVersion("128");
-        browserOptions.addArguments("--disable-popup-blocking");
-        browserOptions.addArguments("--disable-infobars");
-        browserOptions.addArguments("--disable-notifications");
-        browserOptions.addArguments("disable-features=CookiesWithoutSameSiteMustBeSecure");
-        HashMap<String, Object> ltOptions = new HashMap<String, Object>();
-        ltOptions.put("username", "bikashroshan000");
-        ltOptions.put("accessKey", "c8DgoZllcXSR45PKWWN3osywJFWvrkQv9BDHYACs06ckqC6Gah");
-        ltOptions.put("project", "Untitled");
-        ltOptions.put("w3c", true);
-        ltOptions.put("plugin", "java-testNG");
-        ltOptions.put("video", true);
-        ltOptions.put("visual", true);
-        ltOptions.put("console", true);
-        ltOptions.put("project", "LamdaTest");
-        ltOptions.put("name", "Assignment");
-        browserOptions.setCapability("LT:Options", ltOptions);
+//        ChromeOptions browserOptions = new ChromeOptions();
+//        browserOptions.setPlatformName(platform);
+//        browserOptions.setBrowserVersion(browserVersion);
+//        browserOptions.addArguments("--disable-popup-blocking");
+//        browserOptions.addArguments("--disable-infobars");
+//        browserOptions.addArguments("--disable-notifications");
+//        browserOptions.addArguments("disable-features=CookiesWithoutSameSiteMustBeSecure");
+//        HashMap<String, Object> ltOptions = new HashMap<String, Object>();
+//        ltOptions.put("username", "bikashroshan000");
+//        ltOptions.put("accessKey", "c8DgoZllcXSR45PKWWN3osywJFWvrkQv9BDHYACs06ckqC6Gah");
+//        ltOptions.put("project", "Untitled");
+//        ltOptions.put("w3c", true);
+//        ltOptions.put("plugin", "java-testNG");
+//        ltOptions.put("video", true);
+//        ltOptions.put("visual", true);
+//        ltOptions.put("console", true);
+//        ltOptions.put("project", "LamdaTest");
+//        ltOptions.put("name", "Assignment");
+//        browserOptions.setCapability("LT:Options", ltOptions);
+//
+//        driver = new RemoteWebDriver(new URL(GRID_URL), browserOptions);
+//        wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 
-        driver = new RemoteWebDriver(new URL(GRID_URL), browserOptions);
+        if (platform.equalsIgnoreCase("Windows 10")) {
+            ChromeOptions chromeOptions = new ChromeOptions();
+            chromeOptions.setBrowserVersion(browserVersion);
+            chromeOptions.addArguments("--disable-popup-blocking");
+            chromeOptions.addArguments("--disable-infobars");
+            chromeOptions.addArguments("--disable-notifications");
+            chromeOptions.addArguments("disable-features=CookiesWithoutSameSiteMustBeSecure");
+
+            HashMap<String, Object> ltOptions = new HashMap<>();
+            ltOptions.put("username", "bikashroshan000");
+            ltOptions.put("accessKey", "c8DgoZllcXSR45PKWWN3osywJFWvrkQv9BDHYACs06ckqC6Gah");
+            ltOptions.put("project", "LambdaTest");
+            ltOptions.put("w3c", true);
+            ltOptions.put("plugin", "java-testNG");
+            ltOptions.put("video", true);
+            ltOptions.put("visual", true);
+            ltOptions.put("console", true);
+            ltOptions.put("name", "Assignment");
+            chromeOptions.setCapability("LT:Options", ltOptions);
+
+            driver = new RemoteWebDriver(new URL(GRID_URL), chromeOptions);
+
+        } else if (platform.equalsIgnoreCase("macOS Catalina")) {
+            SafariOptions safariOptions = new SafariOptions();
+            safariOptions.setCapability("browserVersion", browserVersion);
+
+            HashMap<String, Object> ltOptions = new HashMap<>();
+            ltOptions.put("username", "bikashroshan000");
+            ltOptions.put("accessKey", "c8DgoZllcXSR45PKWWN3osywJFWvrkQv9BDHYACs06ckqC6Gah");
+            ltOptions.put("project", "LambdaTest");
+            ltOptions.put("w3c", true);
+            ltOptions.put("plugin", "java-testNG");
+            ltOptions.put("video", true);
+            ltOptions.put("visual", true);
+            ltOptions.put("console", true);
+            ltOptions.put("name", "Assignment");
+            safariOptions.setCapability("LT:Options", ltOptions);
+
+            driver = new RemoteWebDriver(new URL(GRID_URL), safariOptions);
+        }
+
+        // Implicit wait (optional)
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+
 
     }
 
@@ -137,12 +186,15 @@ public class LemdaTestAllAssignment {
         // Get the validation message using JavaScript
         JavascriptExecutor js = (JavascriptExecutor) driver;
         String validationMessage = (String) js.executeScript("return arguments[0].validationMessage;", companyField);
-        // Print the validation message (for debug purpose)
+        // Print the validation message
         System.out.println("Validation Message: " + validationMessage);
 
         // Assert the validation message is as expected
-        Assert.assertEquals(validationMessage, "Please fill out this field.");
-
+        //Taking both error message because in iOS error message is different
+        Assert.assertTrue(
+                validationMessage.equals("Please fill out this field.") ||
+                        validationMessage.equals("Fill out this field"),
+                "Validation message is incorrect.");
 
         // Step 5: Fill in Name, Email, and other fields
 

@@ -1,5 +1,14 @@
-<suite name="Suite" parallel="tests" thread-count="2">
-    <test name="Test">
+<suite name="LambdaTest Suite" parallel="tests" thread-count="2">
+    <test name="Test on Windows 10 Chrome" >
+        <parameter name="platform" value="Windows 10"/>
+        <parameter name="browserVersion" value="latest"/>
+        <classes>
+            <class name="LemdaTestAllAssignment"/>
+        </classes>
+    </test>
+    <test name="Test on macOS Catalina Safari">
+        <parameter name="platform" value="macOS Catalina"/>
+        <parameter name="browserVersion" value="latest"/>
         <classes>
             <class name="LemdaTestAllAssignment"/>
         </classes>

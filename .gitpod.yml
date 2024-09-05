@@ -7,9 +7,7 @@ tasks:
   - name: Run TestNG Tests
     command: mvn test -DsuiteXmlFile=testng.xml
     # Optional: Define the port if your application needs to expose it
-    ports:
-      - port: 8080
-        onOpen: open-preview
+
 
 vscode:
   extensions:

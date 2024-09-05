@@ -37,29 +37,6 @@ public class LemdaTestAllAssignment {
     @BeforeClass
     public void setUp(String platform, String browserVersion) throws MalformedURLException {
 
-//        ChromeOptions browserOptions = new ChromeOptions();
-//        browserOptions.setPlatformName(platform);
-//        browserOptions.setBrowserVersion(browserVersion);
-//        browserOptions.addArguments("--disable-popup-blocking");
-//        browserOptions.addArguments("--disable-infobars");
-//        browserOptions.addArguments("--disable-notifications");
-//        browserOptions.addArguments("disable-features=CookiesWithoutSameSiteMustBeSecure");
-//        HashMap<String, Object> ltOptions = new HashMap<String, Object>();
-//        ltOptions.put("username", "bikashroshan000");
-//        ltOptions.put("accessKey", "c8DgoZllcXSR45PKWWN3osywJFWvrkQv9BDHYACs06ckqC6Gah");
-//        ltOptions.put("project", "Untitled");
-//        ltOptions.put("w3c", true);
-//        ltOptions.put("plugin", "java-testNG");
-//        ltOptions.put("video", true);
-//        ltOptions.put("visual", true);
-//        ltOptions.put("console", true);
-//        ltOptions.put("project", "LamdaTest");
-//        ltOptions.put("name", "Assignment");
-//        browserOptions.setCapability("LT:Options", ltOptions);
-//
-//        driver = new RemoteWebDriver(new URL(GRID_URL), browserOptions);
-//        wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-
         if (platform.equalsIgnoreCase("Windows 10")) {
             ChromeOptions chromeOptions = new ChromeOptions();
             chromeOptions.setBrowserVersion(browserVersion);

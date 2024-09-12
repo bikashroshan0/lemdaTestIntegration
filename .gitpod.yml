@@ -1,16 +1,10 @@
-image: gitpod/workspace-java:latest
+image:
+  file: .gitpod.Dockerfile
 
 tasks:
-  - name: Build Project
-    command: mvn clean install
+  - init: mvn clean install
+  - command: mvn test
 
-  - name: Run TestNG Tests
-    command: mvn test -DsuiteXmlFile=testng.xml
-    # Optional: Define the port if your application needs to expose it
-
-
-vscode:
-  extensions:
-    - vscjava.vscode-java-pack
-    - redhat.vscode-yaml
-    - vscjava.vscode-maven
+ports:
+  - port: 4444
+    onOpen: ignore
